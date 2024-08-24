@@ -1,12 +1,11 @@
-import { User } from '../models';
-import { CreateUserInput } from '../schemas';
+import { CreateUser, User } from '../models';
 import { hashPassword, PrismaService } from '../../services';
 import { HttpRequestError } from '../../utils';
 import { StatusCodes } from 'http-status-codes';
 
 const prisma = PrismaService.getInstance();
 
-export const createUser = async (user: CreateUserInput['body']): Promise<User> => {
+export const createUser = async (user: CreateUser): Promise<User> => {
   const { username, password } = user;
 
   const userExists = await prisma.user.findUnique({

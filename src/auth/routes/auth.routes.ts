@@ -1,12 +1,12 @@
 import { Router } from 'express';
+import { authSignInHandler } from '../controller';
 import { validateResource } from '../../middlewares';
-import { createUserHandler } from '../controller';
 import { AuthUserSchema } from '../../schemas';
 
-export const userRoutes = (): Router => {
+export const authRoutes = () => {
   const router = Router();
 
-  router.post('/', validateResource(AuthUserSchema), createUserHandler);
+  router.post('/signin', validateResource(AuthUserSchema), authSignInHandler);
 
   return router;
 };
