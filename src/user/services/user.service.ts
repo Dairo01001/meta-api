@@ -1,6 +1,6 @@
 import { User } from '../models';
 import { CreateUserInput } from '../schemas';
-import { PrismaService } from '../../services';
+import { hashPassword, PrismaService } from '../../services';
 import { HttpRequestError } from '../../utils';
 import { StatusCodes } from 'http-status-codes';
 
@@ -19,10 +19,12 @@ export const createUser = async (user: CreateUserInput['body']): Promise<User> =
     throw new HttpRequestError('Username already exists', StatusCodes.CONFLICT);
   }
 
+  const passwordHash = await hashPassword(password);
+
   const newUser = await prisma.user.create({
     data: {
       username,
-      password,
+      password: passwordHash,
     },
   });
 

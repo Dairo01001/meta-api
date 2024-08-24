@@ -4,6 +4,7 @@ import supertest from 'supertest';
 import { PrismaService } from '../../src/services';
 import createApp from '../../src/app';
 import { StatusCodes } from 'http-status-codes';
+import { User } from '../../src/user';
 
 const app = createApp();
 const prisma = PrismaService.getInstance();
@@ -23,7 +24,7 @@ describe('User Controller POST /api/user Service', () => {
 
   it('POST /api/user with repeated username', async () => {
     return supertest(app)
-      .post('/api/user')
+      .post('/api/users')
       .send({ username: 'dairo', password: 'Dairo_1234' })
       .expect('content-type', /json/)
       .expect(StatusCodes.CONFLICT)
@@ -31,6 +32,28 @@ describe('User Controller POST /api/user Service', () => {
         expect(res.body).toEqual({
           message: 'Username already exists',
         });
+      });
+  });
+
+  it('POST /api/user with valid body', () => {
+    const newUser: Partial<User> = {
+      username: 'dairo.g',
+      password: 'Dairo_1234',
+    };
+
+    return supertest(app)
+      .post('/api/users')
+      .send(newUser)
+      .expect('content-type', /json/)
+      .expect(StatusCodes.CREATED)
+      .then((res) => {
+        expect(res.body).toEqual({
+          id: expect.any(String),
+          username: newUser.username,
+          password: expect.any(String),
+        });
+
+        expect(res.body.password).not.toContain(newUser.password);
       });
   });
 });

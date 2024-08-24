@@ -8,16 +8,16 @@ import { StatusCodes } from 'http-status-codes';
 const app = createApp();
 const prisma = PrismaService.getInstance();
 
-describe('User Controller POST /api/user validation', () => {
+describe('User Controller POST /api/users validation', () => {
   afterAll(async () => {
     const deleteUser = prisma.user.deleteMany();
     await prisma.$transaction([deleteUser]);
     await prisma.$disconnect();
   });
 
-  it('POST /api/user with invalid body', async () => {
+  it('POST /api/users with invalid body', async () => {
     return supertest(app)
-      .post('/api/user')
+      .post('/api/users')
       .send({})
       .expect('content-type', /json/)
       .expect(StatusCodes.BAD_REQUEST)
@@ -30,7 +30,7 @@ describe('User Controller POST /api/user validation', () => {
 
   it('POST /api/user with invalid username', async () => {
     return supertest(app)
-      .post('/api/user')
+      .post('/api/users')
       .send({ username: '', password: 'Username?1' })
       .expect('content-type', /json/)
       .expect(StatusCodes.BAD_REQUEST)
@@ -43,7 +43,7 @@ describe('User Controller POST /api/user validation', () => {
 
   it('POST /api/user with invalid password', async () => {
     return supertest(app)
-      .post('/api/user')
+      .post('/api/users')
       .send({ username: 'dairo', password: '12345678' })
       .expect('content-type', /json/)
       .expect(StatusCodes.BAD_REQUEST)
@@ -57,7 +57,7 @@ describe('User Controller POST /api/user validation', () => {
 
   it('POST /api/user with valid body', () => {
     return supertest(app)
-      .post('/api/user')
+      .post('/api/users')
       .send({ username: 'Dairo Garcia', password: 'Dairo_1234' })
       .expect('content-type', /json/)
       .expect(StatusCodes.CREATED)
