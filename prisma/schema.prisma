@@ -21,8 +21,16 @@ model User {
 
   status   UserStatus @relation(fields: [statusId], references: [id])
   statusId Int        @map("status_id_user")
+  role     Role       @relation(fields: [roleId], references: [id])
+  roleId   Int        @map("role_id_user")
   person   Person?
   profile  Profile?
+}
+
+model Role {
+  id    Int    @id @default(autoincrement()) @map("id_role")
+  name  String @unique @map("name_role")
+  users User[]
 }
 
 model Profile {
