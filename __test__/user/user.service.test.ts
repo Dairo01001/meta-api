@@ -9,7 +9,7 @@ import { User } from '../../src/user';
 const app = createApp();
 const prisma = PrismaService.getInstance();
 
-describe('User Controller POST /api/user Service', () => {
+describe('User Controller POST /api/users Service', () => {
   beforeAll(async () => {
     await prisma.user.createMany({
       data: [{ username: 'dairo', password: '123456' }],
@@ -22,7 +22,7 @@ describe('User Controller POST /api/user Service', () => {
     await prisma.$disconnect();
   });
 
-  it('POST /api/user with repeated username', async () => {
+  it('POST /api/users with repeated username', async () => {
     return supertest(app)
       .post('/api/users')
       .send({ username: 'dairo', password: 'Dairo_1234' })
@@ -35,7 +35,7 @@ describe('User Controller POST /api/user Service', () => {
       });
   });
 
-  it('POST /api/user with valid body', () => {
+  it('POST /api/users with valid body', () => {
     const newUser: Partial<User> = {
       username: 'dairo.g',
       password: 'Dairo_1234',
