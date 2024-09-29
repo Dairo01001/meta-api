@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { createUser } from '../services';
-import { CreateUserInput } from '../schemas';
 import { HttpRequestError } from '../../utils';
+import { SignInUserInput } from '../../schemas';
 
 export const createUserHandler = async (
-  req: Request<{}, {}, CreateUserInput['body']>,
+  req: Request<{}, {}, SignInUserInput['body']>,
   res: Response,
 ): Promise<void> => {
   try {

@@ -1,15 +1,13 @@
 import { afterAll, beforeAll, describe, it } from '@jest/globals';
 import supertest from 'supertest';
-
-import { PrismaService } from '../../src/services';
 import createApp from '../../src/app';
+import { PrismaService } from '../../src/services';
 import { StatusCodes } from 'http-status-codes';
-import { CreateUser } from '../../src/user';
 
 const app = createApp();
 const prisma = PrismaService.getInstance();
 
-describe('User Controller POST /api/users Service', () => {
+describe('Auth Controller POST /api/auth Service', () => {
   beforeAll(async () => {
     await prisma.role.createMany({
       data: [
@@ -26,7 +24,14 @@ describe('User Controller POST /api/users Service', () => {
     });
 
     await prisma.user.createMany({
-      data: [{ username: 'dairo', password: '123456', roleId: 1, statusId: 1 }],
+      data: [
+        {
+          username: 'dairo',
+          password: '$2a$10$2SB7.EAz2OvF9qfQWGyT8e63WH0Pk7/0RGhNRp6k1c/SnMuLoxHAi',
+          roleId: 1,
+          statusId: 1,
+        },
+      ],
     });
   });
 
@@ -39,42 +44,19 @@ describe('User Controller POST /api/users Service', () => {
     await prisma.$disconnect();
   });
 
-  it('POST /api/users with repeated username', async () => {
+  it('POST /api/auth/signin ', () => {
     return supertest(app)
-      .post('/api/users')
+      .post('/api/auth/signin')
       .send({ username: 'dairo', password: 'Dairo_1234' })
       .expect('content-type', /json/)
-      .expect(StatusCodes.CONFLICT)
-      .then((res) => {
-        expect(res.body).toEqual({
-          message: 'Username already exists',
-        });
-      });
-  });
-
-  it('POST /api/users with valid body', () => {
-    const newUser: Partial<CreateUser> = {
-      username: 'dairo.g',
-      password: 'Dairo_1234',
-      role: 'ADMIN',
-      status: 'ACTIVE',
-    };
-
-    return supertest(app)
-      .post('/api/users')
-      .send(newUser)
-      .expect('content-type', /json/)
-      .expect(StatusCodes.CREATED)
+      .expect(StatusCodes.OK)
       .then((res) => {
         expect(res.body).toEqual({
           id: expect.any(String),
-          username: newUser.username,
-          password: expect.any(String),
-          role: 'ADMIN',
-          status: 'ACTIVE',
+          username: 'dairo',
+          accessToken: expect.any(String),
+          refreshToken: expect.any(String),
         });
-
-        expect(res.body.password).not.toContain(newUser.password);
       });
   });
 });

@@ -28,7 +28,7 @@ describe('User Controller POST /api/users validation', () => {
       });
   });
 
-  it('POST /api/user with invalid username', async () => {
+  it('POST /api/users with invalid username', async () => {
     return supertest(app)
       .post('/api/users')
       .send({ username: '', password: 'Username?1' })
@@ -41,7 +41,7 @@ describe('User Controller POST /api/users validation', () => {
       });
   });
 
-  it('POST /api/user with invalid password', async () => {
+  it('POST /api/users with invalid password', async () => {
     return supertest(app)
       .post('/api/users')
       .send({ username: 'dairo', password: '12345678' })
@@ -55,7 +55,7 @@ describe('User Controller POST /api/users validation', () => {
       });
   });
 
-  it('POST /api/user with valid body', () => {
+  it('POST /api/users with valid body', () => {
     return supertest(app)
       .post('/api/users')
       .send({ username: 'Dairo Garcia', password: 'Dairo_1234' })
@@ -66,6 +66,8 @@ describe('User Controller POST /api/users validation', () => {
           id: expect.any(String),
           username: 'Dairo Garcia',
           password: expect.any(String),
+          role: 'USER',
+          status: 'ACTIVE',
         });
       });
   });
