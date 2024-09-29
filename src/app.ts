@@ -4,7 +4,7 @@ import cors from 'cors';
 import 'dotenv/config';
 import routes from './routes';
 import { ORIGIN, PORT } from './config';
-import { unkanowEndpoint } from './middlewares';
+import { globalErrorHandler, unkanowEndpoint } from './middlewares';
 
 const createApp = () => {
   const app: Application = express();
@@ -21,6 +21,8 @@ const createApp = () => {
     }),
   );
   routes(app);
+
+  app.use(globalErrorHandler);
   app.use(unkanowEndpoint);
 
   return app;

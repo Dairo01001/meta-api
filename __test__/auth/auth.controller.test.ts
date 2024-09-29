@@ -9,14 +9,38 @@ const prisma = PrismaService.getInstance();
 
 describe('Auth Controller POST /api/auth Service', () => {
   beforeAll(async () => {
+    await prisma.role.createMany({
+      data: [
+        { id: 1, name: 'ADMIN' },
+        { id: 2, name: 'USER' },
+      ],
+    });
+
+    await prisma.userStatus.createMany({
+      data: [
+        { id: 1, name: 'ACTIVE' },
+        { id: 2, name: 'INACTIVE' },
+      ],
+    });
+
     await prisma.user.createMany({
-      data: [{ username: 'dairo', password: '$2a$10$2SB7.EAz2OvF9qfQWGyT8e63WH0Pk7/0RGhNRp6k1c/SnMuLoxHAi' }],
+      data: [
+        {
+          username: 'dairo',
+          password: '$2a$10$2SB7.EAz2OvF9qfQWGyT8e63WH0Pk7/0RGhNRp6k1c/SnMuLoxHAi',
+          roleId: 1,
+          statusId: 1,
+        },
+      ],
     });
   });
 
   afterAll(async () => {
     const deleteUser = prisma.user.deleteMany();
-    await prisma.$transaction([deleteUser]);
+    const deleteRole = prisma.role.deleteMany();
+    const deleteStatus = prisma.userStatus.deleteMany();
+
+    await prisma.$transaction([deleteUser, deleteRole, deleteStatus]);
     await prisma.$disconnect();
   });
 

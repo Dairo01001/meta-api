@@ -66,6 +66,8 @@ describe('User Controller POST /api/users validation', () => {
           id: expect.any(String),
           username: 'Dairo Garcia',
           password: expect.any(String),
+          role: 'USER',
+          status: 'ACTIVE',
         });
       });
   });
