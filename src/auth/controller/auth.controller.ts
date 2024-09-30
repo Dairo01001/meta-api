@@ -5,7 +5,7 @@ import { findUniqueUser } from '../../user';
 import { SignInUserInput } from '../../schemas';
 import { comparePassword } from '../../services';
 import { HttpRequestError } from '../../utils';
-import { signTokens } from '../../services/jwt.service';
+import { signJwt, signTokens, verifyJwt } from '../../services/jwt.service';
 
 const cookiesOptions: CookieOptions = {
   httpOnly: true,
@@ -44,7 +44,6 @@ export const authSignInHandler = async (
     }
 
     const { accessToken, refreshToken } = signTokens(user.id);
-    console.log(accessToken, refreshToken);
     res.cookie('access_token', accessToken, accessTokenCookieOptions);
     res.cookie('refresh_token', refreshToken, refreshTokenCookieOptions);
     res.cookie('logged_in', true, {
@@ -59,6 +58,68 @@ export const authSignInHandler = async (
       status: user.status.name,
       accessToken,
       refreshToken,
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+export const refreshAccessTokenHandler = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const refreshToken = req.cookies.refresh_token;
+    const message = 'Could not refresh access token';
+
+    if (!refreshToken) {
+      return next(new HttpRequestError(message, 403));
+    }
+
+    const decoded = verifyJwt<{ sub: string }>(refreshToken, 'refreshTokenPrivateKey');
+
+    if (!decoded) {
+      return next(new HttpRequestError(message, 403));
+    }
+
+    const user = await findUniqueUser({ id: decoded.sub }, { id: true, username: true, person: true });
+
+    if (!user) {
+      return next(new HttpRequestError(message, 403));
+    }
+
+    const accessToken = signJwt({ sub: user.id }, 'accessTokenPrivateKey', {
+      expiresIn: `${ACCESS_TOKEN_EXPIRES_IN}m`,
+    });
+
+    res.cookie('access_token', accessToken, accessTokenCookieOptions);
+    res.cookie('logged_in', true, {
+      ...accessTokenCookieOptions,
+      httpOnly: false,
+    });
+
+    res.status(200).json({
+      id: user.id,
+      username: user.username,
+      role: user.role.name,
+      status: user.status.name,
+      accessToken,
+      refreshToken,
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+function logout(res: Response) {
+  res.cookie('access_token', '', { maxAge: -1 });
+  res.cookie('refresh_token', '', { maxAge: -1 });
+  res.cookie('logged_in', '', { maxAge: -1 });
+}
+
+export const logoutUserHandler = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    logout(res);
+
+    res.status(200).json({
+      message: 'You have been logged out',
     });
   } catch (err: any) {
     next(err);
