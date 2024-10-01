@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { createUser } from '../services';
-import { HttpRequestError } from '../../utils';
 import { SignInUserInput } from '../../schemas';
 
 export const createUserHandler = async (
