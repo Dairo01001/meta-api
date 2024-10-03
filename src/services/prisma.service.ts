@@ -4,7 +4,7 @@ export class PrismaService {
   private static instance: PrismaClient;
 
   private constructor() {
-    PrismaService.instance = new PrismaClient();
+    PrismaService.instance = new PrismaClient({ log: ['query'], errorFormat: 'pretty' });
   }
 
   public static getInstance(): PrismaClient {

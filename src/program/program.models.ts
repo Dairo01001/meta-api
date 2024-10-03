@@ -1,8 +1,13 @@
 import { Faculty } from '../faculty';
 
+export interface CreateProgram {
+  name: string;
+  facultyId: number;
+}
+
 export interface Program {
-  id: string;
+  id: number;
   name: string;
   faculty?: Faculty;
-  facultyId: number;
+  facultyId?: number;
 }

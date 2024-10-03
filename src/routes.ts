@@ -2,6 +2,7 @@ import { Application } from 'express';
 import { userRoutes } from './user';
 import { authRoutes } from './auth';
 import { facultyRoutes } from './faculty';
+import { programRoutes } from './program';
 
 const routes = (app: Application) => {
   app.get('/', (req, res) => {
@@ -10,7 +11,8 @@ const routes = (app: Application) => {
 
   app.use('/api/users', userRoutes());
   app.use('/api/auth', authRoutes());
-  app.use('/api/faculty', facultyRoutes());
+  app.use('/api/faculties', facultyRoutes());
+  app.use('/api/programs', programRoutes());
 };
 
 export default routes;
