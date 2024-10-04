@@ -12,6 +12,15 @@ export const globalErrorHandler = (err: any, req: Request, res: Response, next: 
     if (err.code === 'P2002') {
       return res.status(StatusCodes.CONFLICT).json({ message: 'Unique key is Repeat' });
     }
+
+    if (err.code === 'P2003') {
+      return res.status(StatusCodes.CONFLICT).json({ message: 'Unique key is missing' });
+    }
+
+    if (err.code === 'P2000') {
+      return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Invalid input' });
+    }
+
     console.log(err);
   }
 

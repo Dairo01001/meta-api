@@ -24,7 +24,7 @@ export const deserializeUser = async (req: Request, res: Response, next: NextFun
       return next(new HttpRequestError(`Invalid token or user doesn't exist`, 401));
     }
 
-    const user = await findUniqueUser({ id: decoded.sub }, { id: true, username: true, person: true });
+    const user = await findUniqueUser({ id: decoded.sub }, { id: true, username: true, person: true, profile: true });
 
     if (!user) {
       return next(new HttpRequestError(`Invalid token or session has expired`, 401));

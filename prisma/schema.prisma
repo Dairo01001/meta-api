@@ -50,7 +50,7 @@ model Person {
   id            Int     @id @default(autoincrement()) @map("id_person")
   firstName     String  @map("fistname_person")
   secondName    String? @map("secondname_person")
-  fistSurname   String  @map("fistsurname_person")
+  firstSurname  String  @map("firstsurname_person")
   secondSurname String? @map("secondSurname_person")
   email         String  @unique @map("email_person")
 
