@@ -4,3 +4,5 @@ export interface CreateProfile {
   photo: string;
   userId: string;
 }
+
+export type UpdateProfile = Partial<CreateProfile>;
