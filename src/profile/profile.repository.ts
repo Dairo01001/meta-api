@@ -16,3 +16,13 @@ export const update = (where: Prisma.ProfileWhereUniqueInput, data: Prisma.Profi
     data,
   });
 };
+
+export const updateByUserId = (data: CreateProfile) => {
+  return prisma.profile.upsert({
+    where: {
+      userId: data.userId,
+    },
+    update: data,
+    create: data,
+  });
+};

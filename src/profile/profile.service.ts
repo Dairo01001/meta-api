@@ -1,5 +1,5 @@
 import { CreateProfile, UpdateProfile } from './profile.models';
-import { create, update } from './profile.repository';
+import { create, update, updateByUserId } from './profile.repository';
 
 export const createProfile = async (data: CreateProfile) => {
   return await create(data);
@@ -7,4 +7,8 @@ export const createProfile = async (data: CreateProfile) => {
 
 export const updateProfile = async (id: number, data: UpdateProfile) => {
   return await update({ id }, data);
+};
+
+export const createOrUpdateProfile = async (data: CreateProfile) => {
+  return await updateByUserId(data);
 };

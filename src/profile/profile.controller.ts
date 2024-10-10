@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { CreateProfileInput } from './profile.schema';
 import { StatusCodes } from 'http-status-codes';
-import { createProfile, updateProfile } from './profile.service';
+import { createOrUpdateProfile, createProfile, updateProfile } from './profile.service';
 
 export const createProfileHandler = async (
   req: Request<{}, {}, CreateProfileInput['body']>,
@@ -23,6 +23,20 @@ export const updateProfileHandler = async (
 ) => {
   try {
     res.status(StatusCodes.OK).json(await updateProfile(Number(req.params?.id), req.body));
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+export const upsertProfileHandler = async (
+  req: Request<{}, {}, CreateProfileInput['body']>,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { user } = res.locals;
+    res.status(StatusCodes.OK).json(await createOrUpdateProfile({ ...req.body, userId: user.id }));
   } catch (error) {
     next(error);
   }
