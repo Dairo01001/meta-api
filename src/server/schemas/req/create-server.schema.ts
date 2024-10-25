@@ -1,20 +1,26 @@
-import { object, string, TypeOf } from 'zod';
+import { number, object, string, TypeOf } from 'zod';
 
-export const AuthUserSchema = object({
+export const CreateServerSchema = object({
   body: object({
-    username: string({
-      required_error: 'Username is required',
-    }).min(4, 'Username must be at least 4 characters'),
-    password: string({
-      required_error: 'Password is required',
-    })
-      .min(8, 'Password must be at least 8 characters')
-      .max(16, 'Password must be at most 16 characters')
-      .regex(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!_%*?&])[A-Za-z\d@$!_%*?&]{8,16}$/,
-        'Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character',
-      ),
+    port: number(),
+    urlHost: string(),
+    gridName: string({
+      required_error: 'Server name is required',
+    }),
+    dataSource: string({
+      required_error: 'Data source is required',
+    }),
+    dataBaseName: string({
+      required_error: 'Database name is required',
+    }),
+    dataBaseUser: string({
+      required_error: 'Database user is required',
+    }),
+    dataBasePassword: string({
+      required_error: 'Database password is required',
+    }),
+    statusId: number(),
   }),
 });
 
-export type SignInUserInput = TypeOf<typeof AuthUserSchema>;
+export type CreateServerInput = TypeOf<typeof CreateServerSchema>;

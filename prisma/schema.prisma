@@ -91,12 +91,17 @@ model Server {
 
   status   ServerStatus @relation(fields: [statusId], references: [id])
   statusId Int          @map("statusid_server")
+  files    ServerFiles[]
+  islands  Island[]
 }
 
 model ServerFiles {
   id   Int    @id @default(autoincrement()) @map("id_serverfiles")
   name String @map("name_serverfiles")
   path String @map("path_serverfiles")
+
+  server   Server @relation(fields: [serverId], references: [id])
+  serverId String
 }
 
 model ServerStatus {
@@ -115,4 +120,7 @@ model Island {
   sizeY        Int    @map("sizey_island")
   sizeX        Int    @map("sizex_island")
   internalPort Int    @map("internalport_island")
+
+  server   Server @relation(fields: [serverId], references: [id])
+  serverId String
 }
