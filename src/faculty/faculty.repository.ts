@@ -20,13 +20,16 @@ export const deleteF = (id: Prisma.FacultyWhereUniqueInput['id']) => {
   });
 };
 
-export const getAll = (where: Prisma.FacultyWhereInput) => {
+export const getAll = (where?: Prisma.FacultyWhereInput) => {
   return prisma.faculty.findMany({
     where,
   });
 };
 
-export const update = (id: Prisma.FacultyWhereUniqueInput['id'], data: Prisma.FacultyUpdateInput) => {
+export const update = (
+  id: Prisma.FacultyWhereUniqueInput['id'],
+  data: Prisma.FacultyUpdateInput,
+) => {
   return prisma.faculty.update({
     where: {
       id,
