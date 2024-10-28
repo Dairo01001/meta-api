@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { validateResource } from '../middlewares'
+import { deserializeUser, validateResource } from '../middlewares'
 import {
   createFacultyHandler,
   deleteFacultyHandler,
@@ -16,16 +16,23 @@ import {
 export const facultyRoutes = (): Router => {
   const router = Router()
 
-  router.post('/', validateResource(CreateFacultySchema), createFacultyHandler)
-  router.get('/', getAllFacultiesHandler)
+  router.post(
+    '/',
+    deserializeUser,
+    validateResource(CreateFacultySchema),
+    createFacultyHandler,
+  )
+  router.get('/', deserializeUser, getAllFacultiesHandler)
   router.get('/status', getAllStatusFacultiesHandler)
   router.put(
     '/:id',
+    deserializeUser,
     validateResource(UpdateFacultySchema),
     updateFacultyHandler,
   )
   router.delete(
     '/:id',
+    deserializeUser,
     validateResource(DeleteFacultySchema),
     deleteFacultyHandler,
   )
