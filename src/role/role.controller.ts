@@ -35,7 +35,7 @@ export const updateRoleHandler = async (
   try {
     const { id } = req.params
     const { status } = req.body
-    res.status(StatusCodes.OK).json(await updateRole(id, status))
+    res.status(StatusCodes.OK).json(await updateRole(Number(id), status))
   } catch (error) {
     next(error)
   }

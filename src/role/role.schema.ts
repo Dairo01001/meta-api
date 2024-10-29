@@ -2,7 +2,7 @@ import { boolean, number, object, string, TypeOf } from 'zod'
 
 export const UpdateRoleSchema = object({
   params: object({
-    id: number(),
+    id: string(),
   }),
   body: object({
     status: boolean(),
