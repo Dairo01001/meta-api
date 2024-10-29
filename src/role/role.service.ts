@@ -23,7 +23,7 @@ export const getAllRoles = (): Promise<Role[]> => {
   return prisma.role.findMany()
 }
 
-export const getRoleById = async (id: number): Promise<Role> => {
+export const getRoleById = (id: number): Promise<Role> => {
   return prisma.role.findFirstOrThrow({
     where: {
       id,
@@ -31,4 +31,13 @@ export const getRoleById = async (id: number): Promise<Role> => {
   })
 }
 
-
+export const updateRole = (id: number, status: boolean): Promise<Role> => {
+  return prisma.role.update({
+    data: {
+      status,
+    },
+    where: {
+      id,
+    },
+  })
+}
