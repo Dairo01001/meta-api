@@ -1,4 +1,4 @@
-import { boolean, number, object, string, TypeOf } from 'zod'
+import { boolean, object, string, TypeOf } from 'zod'
 
 export const ServerStatusSchema = object({
   body: object({
@@ -16,7 +16,7 @@ export const UpdateServerStatusSchema = object({
     status: boolean(),
   }),
   params: object({
-    id: number(),
+    id: string(),
   }),
 })
 
