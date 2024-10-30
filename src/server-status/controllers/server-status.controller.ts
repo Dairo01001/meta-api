@@ -1,14 +1,18 @@
-import { NextFunction, Request, Response } from 'express';
-import { StatusCodes } from 'http-status-codes';
-import { CreateServerStatusInput } from '../schemas';
-import { findAllServerStatus, upsertServerStatus } from '../services';
+import { NextFunction, Request, Response } from 'express'
+import { StatusCodes } from 'http-status-codes'
+import { CreateServerStatusInput, UpdateServerStatusInput } from '../schemas'
+import {
+  findAllServerStatus,
+  updateServerStatus,
+  upsertServerStatus,
+} from '../services'
 
 export const upsertServerStatusHandler = async (
   req: Request<{}, {}, CreateServerStatusInput['body']>,
   res: Response,
   next: NextFunction,
 ) => {
-  const { name, status } = req.body;
+  const { name, status } = req.body
 
   try {
     return res.status(StatusCodes.CREATED).json(
@@ -16,11 +20,11 @@ export const upsertServerStatusHandler = async (
         name,
         status: status || true,
       }),
-    );
+    )
   } catch (error) {
-    next(error);
+    next(error)
   }
-};
+}
 
 export const findAllServerStatusHandler = async (
   req: Request,
@@ -28,8 +32,25 @@ export const findAllServerStatusHandler = async (
   next: NextFunction,
 ) => {
   try {
-    res.status(StatusCodes.OK).json(await findAllServerStatus());
+    res.status(StatusCodes.OK).json(await findAllServerStatus())
   } catch (error) {
-    next(error);
+    next(error)
   }
-};
+}
+
+export const updateServerStatusHandler = async (
+  req: Request<any, {}, UpdateServerStatusInput['body']>,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { status } = req.body
+  const { id } = req.params
+
+  try {
+    res
+      .status(StatusCodes.OK)
+      .json(await updateServerStatus(Number(id), status))
+  } catch (error) {
+    next(error)
+  }
+}

@@ -1,10 +1,14 @@
-import { CreateServerStatus } from '../models';
-import { findAll, upsert } from '../repository';
+import { CreateServerStatus } from '../models'
+import { findAll, update, upsert } from '../repository'
 
 export const upsertServerStatus = (upsertData: CreateServerStatus) => {
-  return upsert(upsertData);
-};
+  return upsert(upsertData)
+}
 
 export const findAllServerStatus = () => {
-  return findAll();
-};
+  return findAll()
+}
+
+export const updateServerStatus = (id: number, status: boolean) => {
+  return update({ id }, { status })
+}
