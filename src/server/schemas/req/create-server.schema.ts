@@ -1,9 +1,16 @@
-import { number, object, string, TypeOf } from 'zod';
+import { number, object, string, TypeOf } from 'zod'
 
 export const CreateServerSchema = object({
   body: object({
-    port: number(),
-    urlHost: string(),
+    processId: string({
+      required_error: 'Process id is required',
+    }),
+    port: number({
+      required_error: 'Port is required',
+    }),
+    urlHost: string({
+      required_error: 'Url host is required',
+    }),
     gridName: string({
       required_error: 'Server name is required',
     }),
@@ -19,8 +26,10 @@ export const CreateServerSchema = object({
     dataBasePassword: string({
       required_error: 'Database password is required',
     }),
-    statusId: number(),
+    statusId: number({
+      required_error: 'Status id is required',
+    }),
   }),
-});
+})
 
-export type CreateServerInput = TypeOf<typeof CreateServerSchema>;
+export type CreateServerInput = TypeOf<typeof CreateServerSchema>
