@@ -14,18 +14,18 @@ export const userStatusRoutes = () => {
   const router = Router()
 
   router.post(
-    '/user-status',
+    '/',
     validateResource(CreateUserStatusSchema),
     deserializeUser,
     createUserStatusHandler,
   )
   router.put(
-    '/user-status/:id',
+    '/:id',
     validateResource(UpdateUserStatusSchema),
     deserializeUser,
     updateUserStatusHandler,
   )
-  router.get('/user-status', getAllUserStatusHandler)
+  router.get('/', getAllUserStatusHandler)
 
   return router
 }
