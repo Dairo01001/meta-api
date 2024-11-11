@@ -1,13 +1,24 @@
-import { Prisma } from '@prisma/client';
-import { PrismaService } from '../services';
+import { Prisma } from '@prisma/client'
+import { PrismaService } from '../services'
 
-const prisma = PrismaService.getInstance();
+const prisma = PrismaService.getInstance()
 
 export const create = (data: Prisma.FacultyCreateInput) => {
   return prisma.faculty.create({
     data,
-  });
-};
+  })
+}
+
+export const getFacultyById = (id: Prisma.FacultyWhereUniqueInput['id']) => {
+  return prisma.faculty.findUniqueOrThrow({
+    where: {
+      id,
+    },
+    include: {
+      programs: true,
+    },
+  })
+}
 
 export const deleteF = (id: Prisma.FacultyWhereUniqueInput['id']) => {
   return prisma.faculty.update({
@@ -17,14 +28,14 @@ export const deleteF = (id: Prisma.FacultyWhereUniqueInput['id']) => {
     data: {
       status: false,
     },
-  });
-};
+  })
+}
 
 export const getAll = (where?: Prisma.FacultyWhereInput) => {
   return prisma.faculty.findMany({
     where,
-  });
-};
+  })
+}
 
 export const update = (
   id: Prisma.FacultyWhereUniqueInput['id'],
@@ -35,5 +46,5 @@ export const update = (
       id,
     },
     data,
-  });
-};
+  })
+}

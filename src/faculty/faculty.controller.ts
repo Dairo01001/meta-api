@@ -7,6 +7,7 @@ import {
   DeleteFacultyInput,
   getAllFaculties,
   getAllStatusFaculties,
+  getFaculty,
   updateFaculty,
   UpdateFacultyInput,
 } from '.'
@@ -30,6 +31,18 @@ export const getAllFacultiesHandler = async (
 ) => {
   try {
     res.status(StatusCodes.OK).json(await getAllFaculties())
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const getFacultyHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    res.status(StatusCodes.OK).json(await getFaculty(Number(req.params?.id)))
   } catch (error) {
     next(error)
   }

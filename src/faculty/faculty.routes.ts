@@ -5,6 +5,7 @@ import {
   deleteFacultyHandler,
   getAllFacultiesHandler,
   getAllStatusFacultiesHandler,
+  getFacultyHandler,
   updateFacultyHandler,
 } from './faculty.controller'
 import {
@@ -36,6 +37,7 @@ export const facultyRoutes = (): Router => {
     validateResource(DeleteFacultySchema),
     deleteFacultyHandler,
   )
+  router.get('/:id', deserializeUser, getFacultyHandler)
 
   return router
 }

@@ -3,6 +3,7 @@ import {
   CreateFaculty,
   deleteF,
   getAll,
+  getFacultyById,
   update,
   UpdateFaculty,
 } from '.'
@@ -23,6 +24,10 @@ export const deleteFaculty = async (id: number) => {
   } catch (error) {
     throw new HttpRequestError('Error to delete Faculty', 400)
   }
+}
+
+export const getFaculty = async (id: number) => {
+  return await getFacultyById(id)
 }
 
 export const getAllFaculties = async () => {
