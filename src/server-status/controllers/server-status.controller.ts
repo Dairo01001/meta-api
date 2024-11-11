@@ -3,6 +3,7 @@ import { StatusCodes } from 'http-status-codes'
 import { CreateServerStatusInput, UpdateServerStatusInput } from '../schemas'
 import {
   findAllServerStatus,
+  findAllServerStatusActive,
   updateServerStatus,
   upsertServerStatus,
 } from '../services'
@@ -33,6 +34,18 @@ export const findAllServerStatusHandler = async (
 ) => {
   try {
     res.status(StatusCodes.OK).json(await findAllServerStatus())
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const findAllServerStatusActiveHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    res.status(StatusCodes.OK).json(await findAllServerStatusActive())
   } catch (error) {
     next(error)
   }

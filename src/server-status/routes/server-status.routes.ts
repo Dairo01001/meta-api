@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { deserializeUser, validateResource } from '../../middlewares'
 import {
+  findAllServerStatusActiveHandler,
   findAllServerStatusHandler,
   updateServerStatusHandler,
   upsertServerStatusHandler,
@@ -23,6 +24,7 @@ export const serverStatusRoutes = (): Router => {
     deserializeUser,
     updateServerStatusHandler,
   )
+  router.get('/active', deserializeUser, findAllServerStatusActiveHandler)
 
   return router
 }

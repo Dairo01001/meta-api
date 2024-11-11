@@ -11,4 +11,13 @@ export interface ServerEntity {
   statusId: number
 }
 
-export type CreateServer = Omit<ServerEntity, 'id'>
+export interface CreateServer {
+  processId: string
+  port: number
+  urlHost: string
+  gridName: string
+  dataSource: string
+  dataBaseName: string
+  dataBaseUser: string
+  dataBasePassword: string
+}

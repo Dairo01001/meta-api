@@ -26,9 +26,6 @@ export const CreateServerSchema = object({
     dataBasePassword: string({
       required_error: 'Database password is required',
     }),
-    statusId: number({
-      required_error: 'Status id is required',
-    }),
   }),
 })
 

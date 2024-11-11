@@ -9,6 +9,10 @@ export const findAllServerStatus = () => {
   return findAll()
 }
 
+export const findAllServerStatusActive = () => {
+  return findAll({ status: true })
+}
+
 export const updateServerStatus = (id: number, status: boolean) => {
   return update({ id }, { status })
 }
