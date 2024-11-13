@@ -15,10 +15,12 @@
  *             $ref: '#/components/schemas/CreateFaculty'
  *     responses:
  *       201:
- *         $ref: '#/components/responses/Faculty'
+ *         $ref: '#/components/schemas/Faculty'
  *       409:
  *         description: Faculty already exists
  *         $ref: '#/components/responses/Conflict'
+ *     security:
+ *       - bearerAuth: []
  *
  *   get:
  *     summary: Traer todas las facultades
@@ -34,6 +36,8 @@
  *                 $ref: '#/components/schemas/Faculty'
  *       401:
  *         $ref: '#/components/responses/Unauthorized'
+ *     security:
+ *       - bearerAuth: []
  *
  * /faculties/status:
  *   get:
@@ -58,7 +62,7 @@
  *         in: path
  *         required: true
  *         schema:
- *           type: string
+ *           type: number
  *     responses:
  *       200:
  *         description: Faculty object
@@ -68,6 +72,8 @@
  *               $ref: '#/components/schemas/Faculty'
  *       401:
  *         $ref: '#/components/responses/Unauthorized'
+ *     security:
+ *       - bearerAuth: []
  *
  *   put:
  *     summary: Update faculty
@@ -77,7 +83,7 @@
  *         in: path
  *         required: true
  *         schema:
- *           type: string
+ *           type: number
  *     requestBody:
  *       required: true
  *       content:
@@ -96,6 +102,8 @@
  *       404:
  *         description: Faculty not found
  *         $ref: '#/components/responses/NotFound'
+ *     security:
+ *       - bearerAuth: []
  *
  *   delete:
  *     summary: Delete faculty
@@ -105,7 +113,7 @@
  *         in: path
  *         required: true
  *         schema:
- *           type: string
+ *           type: number
  *     responses:
  *       200:
  *         description: Deleted faculty object
@@ -118,9 +126,30 @@
  *       404:
  *         description: Faculty not found
  *         $ref: '#/components/responses/NotFound'
+ *     security:
+ *       - bearerAuth: []
  *
  * components:
  *   schemas:
+ *     UpdateFaculty:
+ *       type: object
+ *       properties:
+ *         status:
+ *           type: boolean
+ *           example: true
+ *
+ *     CreateFaculty:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *           example: Facultad de Ingeniería
+ *         status:
+ *           type: boolean
+ *           example: true
+ *       required:
+ *         - name
+ *
  *     Faculty:
  *       type: object
  *       properties:

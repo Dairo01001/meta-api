@@ -51,7 +51,7 @@
  *             properties:
  *               message:
  *                 type: string
- *                 example: Invalid username or password
+ *                 example: Invalid token or session has expired
  *   schemas:
  *     AuthUser:
  *       type: object
