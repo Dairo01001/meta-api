@@ -2,10 +2,10 @@
  * @swagger
  * tags:
  * - name: Users
- *   description: Users API
+ *   description: Usuarios resgistrados en el sistema
  * /users:
  *   post:
- *     summary: Create user
+ *     summary: Crear un nuevo usuario
  *     tags: [Users]
  *     requestBody:
  *       required: true
@@ -24,7 +24,7 @@
  *   get:
  *     security:
  *       - bearerAuth: []
- *     summary: Get current user
+ *     summary: Traer el usuario actual
  *     tags: [Users]
  *     responses:
  *       200:

@@ -5,7 +5,7 @@
  *   description: Auth API
  * /auth/signin:
  *   post:
- *     summary: Sign in
+ *     summary: Autentificación de usuario
  *     tags: [Auth]
  *     requestBody:
  *       required: true
