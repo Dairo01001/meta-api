@@ -1,0 +1,3 @@
+apis:
+  src/swagger.yml:
+    alias: openapi

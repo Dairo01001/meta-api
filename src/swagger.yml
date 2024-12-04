@@ -1,0 +1,66 @@
+openapi: 3.0.0
+info:
+  title: UA3D API
+  description: API para UA3D
+  version: 1.0.0
+paths:
+  /auth/signin:
+    post:
+      summary: Signin
+      description: Login del usuario
+      operationId: sign-in
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SigninRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    SigninRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Usuario del Chaira
+          example: j.doe
+        password:
+          type: string
+          description: Contraseña del Chaira
+          example: jhon_doe_1234
+    LoginResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        token:
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
