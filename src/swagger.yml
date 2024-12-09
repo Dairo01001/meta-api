@@ -7,7 +7,9 @@ tags:
   - name: Auth
     description: Autenticación de usuarios
   - name: Faculties
-    description: Facultades
+    description: Facultades de la universidad de la Amazonia
+  - name: Persons
+    description: Usuarios de la plataforma
 paths:
   /auth/signin:
     post:
@@ -26,27 +28,23 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LoginResponse'
+                $ref: '#/components/schemas/SigninResponse'
         '400':
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/responses/BadRequestError'
         '401':
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/responses/UnauthorizedError'
   /faculties:
     post:
+      security:
+        - bearerAuth: []
       summary: Crea una facultad
       tags: [Faculties]
       description: Crea una facultad
@@ -68,26 +66,17 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/responses/BadRequestError'
         '401':
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/responses/UnauthorizedError'
+
     get:
+      security:
+        - bearerAuth: []
       summary: Trae todas las facultades
       tags: [Faculties]
       description: Obtener facultades
@@ -106,19 +95,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/responses/BadRequestError'
         '401':
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/responses/UnauthorizedError'
+
   /faculties/status:
     get:
       tags: [Faculties]
@@ -139,52 +123,81 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/responses/BadRequestError'
+
+  /faculties/{facultyId}:
+    put:
+      security:
+        - bearerAuth: []
+      summary: Actualiza una facultad
+      parameters:
+        - in: path
+          name: facultyId
+          schema:
+            type: integer
+          required: true
+          description: ID de la facultad que desea actualizar
+      tags: [Faculties]
+      description: Actualiza una facultad
+      operationId: update-faculty
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Faculty'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Faculty'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/BadRequestError'
         '401':
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '403':
-          description: Forbidden
+                $ref: '#/components/responses/UnauthorizedError'
+
+    delete:
+      security:
+        - bearerAuth: []
+      summary: Elimina una facultad
+      parameters:
+        - in: path
+          name: facultyId
+          schema:
+            type: integer
+          required: true
+          description: ID de la facultad que desea eliminar
+      tags: [Faculties]
+      description: Elimina una facultad
+      operationId: delete-faculty
+      responses:
+        '200':
+          description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-                /faculties/status:
-                  get:
-                    tags: [Faculties]
-                    description: Obtener todas las facultades Activas
-                    operationId: get-active-faculties
-                    responses:
-                      '200':
-                        description: OK
-                        content:
-                          application/json:
-                            schema:
-                              type: array
-                              items:
-                                $ref: '#/components/schemas/Faculty'
-                      '400':
-                        description: Bad Request
-                        content:
-                          application/json:
-                            schema:
-                              $ref: '#/components/schemas/ErrorResponse'
-                      '401':
-                        description: Unauthorized
-                        content:
-                          application/json:
-                            schema:
-                              $ref: '#/components/schemas/ErrorResponse'
-                      '403':
-                        description: Forbidden
-                        content:
-                          application/json:
-                            schema:
-                              $ref: '#/components/schemas/ErrorResponse'
-  /faculties/{facultyId}:
+                $ref: '#/components/schemas/Faculty'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
     get:
       security:
         - bearerAuth: []
@@ -211,11 +224,87 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/responses/UnauthorizedError'
+  /persons:
+    post:
+      security:
+        - bearerAuth: []
+      summary: Crea un usuario
+      tags: [Persons]
+      description: Crea un usuario
+      operationId: create-person
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePerson'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+    put:
+      security:
+        - bearerAuth: []
+      summary: Actualiza un usuario
+      parameters:
+        - in: path
+          name: personId
+          schema:
+            type: string
+          required: true
+          description: ID del usuario que desea actualizar
+      tags: [Persons]
+      description: Actualiza un usuario
+      operationId: update-person
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePerson'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
 
 components:
   responses:
     UnauthorizedError:
       description: Access token is missing or invalid
+    BadRequestError:
+      description: Bad Request
+    NotFoundError:
+      description: Not Found
+    InternalServerError:
+      description: Internal Server Error
   securitySchemes:
     bearerAuth:
       type: http
@@ -233,7 +322,7 @@ components:
           type: string
           description: Contraseña del Chaira
           example: jhon_doe_1234
-    LoginResponse:
+    SigninResponse:
       type: object
       properties:
         id:
@@ -260,13 +349,6 @@ components:
           type: string
           description: Token de refresco del usuario
           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
-    ErrorResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Mensaje de error
-          example: Algun mensaje de error
     Faculty:
       type: object
       properties:
@@ -306,3 +388,65 @@ components:
           type: number
           description: ID de la facultad
           example: 1
+    CreatePerson:
+      type: object
+      properties:
+        firstname:
+          type: string
+          description: Primer nombre del usuario
+          example: Daniel
+        secondName:
+          type: string
+          description: Segundo nombre del usuario
+          example: Facundo
+        firstSurname:
+          type: string
+          description: Primer apellido del usuario
+          example: Toquica
+        secondSurname:
+          type: string
+          description: Segundo apellido del usuario
+          example: Agudelo
+        email:
+          type: string
+          description: Email del usuario
+          example: daniel.facundo@gmail.com
+        programId:
+          type: number
+          description: ID del programa
+          example: 1
+    Person:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID del usuario
+          example: 2318fb07-d6af-45db-ae0b-459e468a5e24
+        firstname:
+          type: string
+          description: Primer nombre del usuario
+          example: Daniel
+        secondName:
+          type: string
+          description: Segundo nombre del usuario
+          example: Facundo
+        firstSurname:
+          type: string
+          description: Primer apellido del usuario
+          example: Toquica
+        secondSurname:
+          type: string
+          description: Segundo apellido del usuario
+          example: Agudelo
+        email:
+          type: string
+          description: Email del usuario
+          example: daniel.facundo@gmail.com
+        programId:
+          type: number
+          description: ID del programa
+          example: 1
+        userId:
+          type: string
+          description: ID del usuario
+          example: 2318fb07-d6af-45db-ae0b-459e468a5e24
