@@ -3,10 +3,16 @@ info:
   title: UA3D API
   description: API para UA3D
   version: 1.0.0
+tags:
+  - name: Auth
+    description: Autenticación de usuarios
+  - name: Faculties
+    description: Facultades
 paths:
   /auth/signin:
     post:
       summary: Signin
+      tags: [Auth]
       description: Login del usuario
       operationId: sign-in
       requestBody:
@@ -39,7 +45,182 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+  /faculties:
+    post:
+      summary: Crea una facultad
+      tags: [Faculties]
+      description: Crea una facultad
+      operationId: create-faculty
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Faculty'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Faculty'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    get:
+      summary: Trae todas las facultades
+      tags: [Faculties]
+      description: Obtener facultades
+      operationId: get-faculties
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Faculty'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /faculties/status:
+    get:
+      tags: [Faculties]
+      summary: Trae todas las facultades activas
+      description: Obtener todas las facultades Activas
+      operationId: get-active-faculties
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Faculty'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                /faculties/status:
+                  get:
+                    tags: [Faculties]
+                    description: Obtener todas las facultades Activas
+                    operationId: get-active-faculties
+                    responses:
+                      '200':
+                        description: OK
+                        content:
+                          application/json:
+                            schema:
+                              type: array
+                              items:
+                                $ref: '#/components/schemas/Faculty'
+                      '400':
+                        description: Bad Request
+                        content:
+                          application/json:
+                            schema:
+                              $ref: '#/components/schemas/ErrorResponse'
+                      '401':
+                        description: Unauthorized
+                        content:
+                          application/json:
+                            schema:
+                              $ref: '#/components/schemas/ErrorResponse'
+                      '403':
+                        description: Forbidden
+                        content:
+                          application/json:
+                            schema:
+                              $ref: '#/components/schemas/ErrorResponse'
+  /faculties/{facultyId}:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Consulta una Facultad
+      parameters:
+        - in: path
+          name: facultyId
+          schema:
+            type: integer
+          required: true
+          description: ID de la facultad que desea consultar
+      tags: [Faculties]
+      description: Trae una facultad por ID
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Faculty'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+
 components:
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     SigninRequest:
       type: object
@@ -57,10 +238,71 @@ components:
       properties:
         id:
           type: string
-        token:
+          description: ID del usuario
+          example: 2318fb07-d6af-45db-ae0b-459e468a5e24
+        username:
           type: string
+          description: Usuario del Chaira
+          example: j.doe
+        role:
+          type: string
+          description: Rol del usuario
+          example: USER
+        status:
+          type: string
+          description: Estado del usuario
+          example: ACTIVE
+        accessToken:
+          type: string
+          description: Token del usuario
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+        refreshToken:
+          type: string
+          description: Token de refresco del usuario
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
     ErrorResponse:
       type: object
       properties:
         message:
           type: string
+          description: Mensaje de error
+          example: Algun mensaje de error
+    Faculty:
+      type: object
+      properties:
+        id:
+          type: number
+          description: ID de la facultad
+          example: 1
+        name:
+          type: string
+          description: Nombre de la facultad
+          example: Facultad de Ingeniería
+        status:
+          type: boolean
+          description: Estado de la facultad
+          example: true
+        programs:
+          type: array
+          description: Programas de la facultad
+          items:
+            $ref: '#/components/schemas/Program'
+    Program:
+      type: object
+      properties:
+        id:
+          type: number
+          description: ID del programa
+          example: 1
+        name:
+          type: string
+          description: Nombre del programa
+          example: Programa de Ingeniería
+        status:
+          type: boolean
+          description: Estado del programa
+          example: true
+        facultyId:
+          type: number
+          description: ID de la facultad
+          example: 1
