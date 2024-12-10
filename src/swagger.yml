@@ -10,6 +10,16 @@ tags:
     description: Facultades de la universidad de la Amazonia
   - name: Persons
     description: Usuarios de la plataforma
+  - name: Profiles
+    description: Perfiles de usuarios
+  - name: Programs
+    description: Programas de la facultad
+  - name: Roles
+    description: Roles del sistema
+  - name: Servers
+    description: Servidores del sistema
+  - name: ServerStatus
+    description: Estados del servidor
 paths:
   /auth/signin:
     post:
@@ -256,6 +266,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/responses/UnauthorizedError'
+  /person/{personId}:
     put:
       security:
         - bearerAuth: []
@@ -282,6 +293,638 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Person'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+  /profiles:
+    post:
+      security:
+        - bearerAuth: []
+      summary: Crea un perfil
+      tags: [Profiles]
+      description: Crea un perfil
+      operationId: create-profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Profile'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+    patch:
+      security:
+        - bearerAuth: []
+      summary: Actualiza o crea un perfil
+      tags: [Profiles]
+      description: Actualiza un perfil o lo crea si no existe
+      operationId: upsert-profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Profile'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+  /profiles/{profileId}:
+    put:
+      security:
+        - bearerAuth: []
+      summary: Actualiza un perfil
+      parameters:
+        - in: path
+          name: profileId
+          schema:
+            type: string
+          required: true
+          description: ID del perfil que desea actualizar
+      tags: [Profiles]
+      description: Actualiza un perfil
+      operationId: update-profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Profile'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+  /programs:
+    post:
+      security:
+        - bearerAuth: []
+      summary: Crea un programa
+      tags: [Programs]
+      description: Crea un programa
+      operationId: create-program
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Program'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Program'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+    get:
+      security:
+        - bearerAuth: []
+      summary: Trae todos los programas
+      tags: [Programs]
+      description: Obtener programas
+      operationId: get-programs
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Program'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+  /programs/{programId}:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Consulta un programa
+      parameters:
+        - in: path
+          name: programId
+          schema:
+            type: number
+          required: true
+          description: ID del programa que desea consultar
+      tags: [Programs]
+      description: Trae un programa por ID
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Program'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+  /roles:
+    post:
+      security:
+        - bearerAuth: []
+      summary: Crea un rol
+      tags: [Roles]
+      description: Crea un rol
+      operationId: create-role
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRole'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+    get:
+      security:
+        - bearerAuth: []
+      summary: Trae todos los roles
+      tags: [Roles]
+      description: Obtener roles
+      operationId: get-roles
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Role'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+  /roles/{roleId}:
+    put:
+      security:
+        - bearerAuth: []
+      summary: Actualiza un rol
+      parameters:
+        - in: path
+          name: roleId
+          schema:
+            type: number
+          required: true
+          description: ID del rol que desea actualizar
+      tags: [Roles]
+      description: Actualiza un rol
+      operationId: update-role
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRole'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+  /servers:
+    post:
+      security:
+        - bearerAuth: []
+      summary: Crea un servidor
+      tags: [Servers]
+      description: Crea un servidor
+      operationId: create-server
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateServer'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Server'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+    get:
+      security:
+        - bearerAuth: []
+      summary: Trae todos los servidores
+      tags: [Servers]
+      description: Obtener servidores
+      operationId: get-servers
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Server'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+  /server-status:
+    patch:
+      security:
+        - bearerAuth: []
+      summary: Crea o Actualiza el estado del servidor
+      tags: [ServerStatus]
+      description: Crea o Actualiza el estado del servidor
+      operationId: upsert-server-status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateServerStatus'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerStatus'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+    get:
+      security:
+        - bearerAuth: []
+      summary: Trae todos los estados del servidor
+      tags: [ServerStatus]
+      description: Obtener estados del servidor
+      operationId: get-server-status
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServerStatus'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+  /server-status/{serverStatusId}:
+    put:
+      security:
+        - bearerAuth: []
+      summary: Actualiza el estado del servidor
+      parameters:
+        - in: path
+          name: serverStatusId
+          schema:
+            type: number
+          required: true
+          description: ID del estado del servidor que desea actualizar
+      tags: [ServerStatus]
+      description: Actualiza el estado del servidor
+      operationId: update-server-status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateServerStatus'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerStatus'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+  /server-status/active:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Obtiene todos los estados del servidor activos
+      tags: [ServerStatus]
+      description: Obtiene todos los estados del servidor activos
+      operationId: get-active-server-status
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServerStatus'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+  /users:
+    post:
+      summary: Crea un usuario
+      tags: [Users]
+      description: Crea un usuario
+      operationId: create-user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUser'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+  /users/me:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Obtiene el usuario actual
+      tags: [Users]
+      description: Obtiene el usuario actual
+      operationId: get-current-user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+  /user-status:
+    post:
+      security:
+        - bearerAuth: []
+      summary: Crea el estado del usuario
+      tags: [UserStatus]
+      description: Crea el estado del usuario
+      operationId: create-user-status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserStatus'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserStatus'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+    get:
+      security:
+        - bearerAuth: []
+      summary: Obtiene todos los estados del usuario
+      tags: [UserStatus]
+      description: Obtiene todos los estados del usuario
+      operationId: get-user-status
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserStatus'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+  /user-status/{userStatusId}:
+    put:
+      security:
+        - bearerAuth: []
+      summary: Actualiza el estado del usuario
+      parameters:
+        - in: path
+          name: userStatusId
+          schema:
+            type: number
+          required: true
+          description: ID del estado del usuario que desea actualizar
+      tags: [UserStatus]
+      description: Actualiza el estado del usuario
+      operationId: update-user-status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserStatus'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserStatus'
         '400':
           description: Bad Request
           content:
@@ -450,3 +1093,212 @@ components:
           type: string
           description: ID del usuario
           example: 2318fb07-d6af-45db-ae0b-459e468a5e24
+    Profile:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID del perfil del usuario
+          example: 2318fb07-d6af-45db-ae0b-459e468a5e24
+        birthDate:
+          type: string
+          description: Fecha de nacimiento del usuario
+          example: 1990-01-01
+        phone:
+          type: string
+          description: Telefono del usuario
+          example: 302 123 4567
+        photo:
+          type: string
+          description: Foto del usuario
+          example: https://www.google.com/photo.jpg
+        userId:
+          type: string
+          description: ID del usuario
+          example: 2318fb07-d6af-45db-ae0b-459e468a5e24
+    Role:
+      type: object
+      properties:
+        id:
+          type: number
+          description: ID del rol
+          example: 1
+        name:
+          type: string
+          description: Nombre del rol
+          example: USER
+        status:
+          type: boolean
+          description: Estado del rol
+          example: true
+    CreateRole:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nombre del rol
+          example: USER
+    CreateServer:
+      type: object
+      properties:
+        processId:
+          type: string
+          description: ID del proceso del servidor
+          example: 2318fb07
+        port:
+          type: number
+          description: Puerto del servidor
+          example: 8080
+        urlHost:
+          type: string
+          description: URL del servidor
+          example: http://localhost:8080
+        gridName:
+          type: string
+          description: Nombre del servidor
+          example: localhost
+        dataSource:
+          type: string
+          description: URL de los archivos del servidor
+          example: http://localhost:8080/data
+        dataBaseName:
+          type: string
+          description: Nombre de la base de datos
+          example: ua3d
+        dataBaseUser:
+          type: string
+          description: Usuario de la base de datos
+          example: ua3d
+        dataBasePassword:
+          type: string
+          description: Contraseña de la base de datos
+          example: ua3d
+    Server:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID del servidor
+          example: 2318fb07
+        processId:
+          type: string
+          description: ID del proceso del servidor
+          example: 2318fb07
+        port:
+          type: number
+          description: Puerto del servidor
+          example: 8080
+        urlHost:
+          type: string
+          description: URL del servidor
+          example: http://localhost:8080
+        gridName:
+          type: string
+          description: Nombre del servidor
+          example: localhost
+        dataSource:
+          type: string
+          description: URL de los archivos del servidor
+          example: http://localhost:8080/data
+        dataBaseName:
+          type: string
+          description: Nombre de la base de datos
+          example: ua3d
+        dataBaseUser:
+          type: string
+          description: Usuario de la base de datos
+          example: ua3d
+        dataBasePassword:
+          type: string
+          description: Contraseña de la base de datos
+          example: ua3d
+        statusId:
+          type: number
+          description: Id del estado del servidor
+          example: 1
+    ServerStatus:
+      type: object
+      properties:
+        id:
+          type: number
+          description: ID del estado del servidor
+          example: 1
+        name:
+          type: string
+          description: Nombre del estado del servidor
+          example: ACTIVE
+        status:
+          type: boolean
+          description: Estado del estado del servidor
+          example: true
+    CreateServerStatus:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nombre del estado del servidor
+          example: ACTIVE
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID del usuario
+          example: 2318fb07-d6af-45db-ae0b-459e468a5e24
+        username:
+          type: string
+          description: Usuario del Chaira
+          example: j.doe
+        password:
+          type: string
+          description: Contraseña del Chaira
+          example: jhon_doe_1234
+        statusId:
+          type: number
+          description: ID del estado del usuario
+          example: 1
+        roleId:
+          type: number
+          description: ID del rol del usuario
+          example: 1
+    CreateUser:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Usuario del Chaira
+          example: j.doe
+        password:
+          type: string
+          description: Contraseña del Chaira
+          example: jhon_doe_1234
+        statusId:
+          type: number
+          description: ID del estado del usuario
+          example: 1
+        roleId:
+          type: number
+          description: ID del rol del usuario
+          example: 1
+    UserStatus:
+      type: object
+      properties:
+        id:
+          type: number
+          description: ID del estado del usuario
+          example: 1
+        name:
+          type: string
+          description: Nombre del estado del usuario
+          example: ACTIVE
+        status:
+          type: boolean
+          description: Estado del estado del usuario
+          example: true
+    CreateUserStatus:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nombre del estado del usuario
+          example: ACTIVE
