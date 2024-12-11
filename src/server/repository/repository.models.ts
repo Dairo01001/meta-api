@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client'
 import { PrismaService } from '../../services'
 import { CreateServer } from '../models'
 
@@ -27,6 +28,17 @@ export const findAll = async () => {
   return prisma.server.findMany({
     include: {
       status: true,
+    },
+  })
+}
+
+export const findById = async (where: Prisma.ServerWhereUniqueInput) => {
+  return prisma.server.findUniqueOrThrow({
+    where,
+    include: {
+      status: true,
+      files: true,
+      islands: true,
     },
   })
 }

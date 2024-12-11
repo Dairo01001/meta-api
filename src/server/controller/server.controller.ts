@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { CreateServerInput } from '../schemas'
-import { createServer, findAllServer } from '../services'
+import { createServer, findAllServer, findServerById } from '../services'
 
 export const createServerHandler = async (
   req: Request<{}, {}, CreateServerInput['body']>,
@@ -22,6 +22,19 @@ export const findAllServerHandler = async (
 ) => {
   try {
     res.status(StatusCodes.OK).json(await findAllServer())
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const findByIdHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const id = req.params?.id
+  try {
+    res.status(StatusCodes.OK).json(await findServerById(id))
   } catch (error) {
     next(error)
   }

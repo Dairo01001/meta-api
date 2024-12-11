@@ -653,6 +653,40 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/responses/UnauthorizedError'
+  /servers/{serverId}:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Obtener un servidor por su ID
+      tags: [Servers]
+      description: Obtiene un servidor por su ID
+      operationId: get-server-by-id
+      parameters:
+        - name: serverId
+          in: path
+          description: ID del servidor
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Server'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
   /server-status:
     patch:
       security:
