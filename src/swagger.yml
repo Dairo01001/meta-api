@@ -234,6 +234,40 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/responses/UnauthorizedError'
+  /faculties/{facultyId}/programs:
+    get:
+      summary: Obtiene todos los programas de una facultad
+      tags: [Programs]
+      description: Obtiene todos los programas de una facultad
+      operationId: get-programs-by-faculty
+      parameters:
+        - in: path
+          name: facultyId
+          schema:
+            type: number
+          required: true
+          description: ID de la facultad
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Program'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
   /persons:
     post:
       security:

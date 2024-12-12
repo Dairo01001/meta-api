@@ -8,6 +8,7 @@ import {
   getAllFaculties,
   getAllStatusFaculties,
   getFaculty,
+  getProgramsByFacultyService,
   updateFaculty,
   UpdateFacultyInput,
 } from '.'
@@ -81,6 +82,20 @@ export const updateFacultyHandler = async (
     res
       .status(StatusCodes.OK)
       .json(await updateFaculty(Number(req.params?.id), req.body))
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const getProgramsByFacultyHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    res
+      .status(StatusCodes.OK)
+      .json(await getProgramsByFacultyService(Number(req.params?.id)))
   } catch (error) {
     next(error)
   }

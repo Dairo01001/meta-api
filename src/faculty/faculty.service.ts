@@ -4,6 +4,7 @@ import {
   deleteF,
   getAll,
   getFacultyById,
+  getProgramsByFaculty,
   update,
   UpdateFaculty,
 } from '.'
@@ -51,5 +52,13 @@ export const updateFaculty = async (id: number, data: UpdateFaculty) => {
     return await update(id, data)
   } catch (error) {
     throw new HttpRequestError('Error to update faculty', 400)
+  }
+}
+
+export const getProgramsByFacultyService = async (id: number) => {
+  try {
+    return await getProgramsByFaculty(id)
+  } catch (error) {
+    throw new HttpRequestError('Error to get programs by faculty', 400)
   }
 }

@@ -48,3 +48,13 @@ export const update = (
     data,
   })
 }
+
+export const getProgramsByFaculty = (
+  id: Prisma.FacultyWhereUniqueInput['id'],
+) => {
+  return prisma.program.findMany({
+    where: {
+      facultyId: id,
+    },
+  })
+}
