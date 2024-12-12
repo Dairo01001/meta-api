@@ -1,7 +1,7 @@
-import { Request, Response, NextFunction } from 'express';
-import { StatusCodes } from 'http-status-codes';
-import { createUser } from '../services';
-import { SignInUserInput } from '../../schemas';
+import { NextFunction, Request, Response } from 'express'
+import { StatusCodes } from 'http-status-codes'
+import { SignInUserInput } from '../../schemas'
+import { createUser, findUniqueUserByUsername } from '../services'
 
 export const createUserHandler = async (
   req: Request<{}, {}, SignInUserInput['body']>,
@@ -9,20 +9,37 @@ export const createUserHandler = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    res.status(StatusCodes.CREATED).json(await createUser(req.body));
+    res.status(StatusCodes.CREATED).json(await createUser(req.body))
   } catch (error) {
-    next(error);
+    next(error)
   }
-};
+}
 
-export const getMeHandler = async (req: Request, res: Response, next: NextFunction) => {
+export const getMeHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
-    const user = res.locals.user;
+    const user = res.locals.user
 
     res.status(200).json({
       ...user,
-    });
+    })
   } catch (err: any) {
-    next(err);
+    next(err)
   }
-};
+}
+
+export const getUserByUsernameHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const user = await findUniqueUserByUsername(req.params.username)
+    res.status(StatusCodes.OK).json(user)
+  } catch (err: any) {
+    next(err)
+  }
+}

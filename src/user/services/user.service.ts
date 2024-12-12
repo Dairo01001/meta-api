@@ -57,3 +57,21 @@ export const findUniqueUser = async (
 
   return user
 }
+
+export const findUniqueUserByUsername = async (
+  username: string,
+  select?: Prisma.UserSelect,
+) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      username,
+    },
+    select: {
+      id: true,
+      username: true,
+      ...select,
+    },
+  })
+
+  return user
+}
