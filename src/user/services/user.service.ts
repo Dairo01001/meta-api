@@ -23,7 +23,7 @@ export const createUser = async (user: CreateUser): Promise<CreatedUser> => {
   const passwordHash = await hashPassword(password)
   const newRole = await createRole({ name: role || 'USER' })
   const newUserStatus = await createUserStatus({
-    name: status || 'ACTIVE',
+    name: status || 'ACTIVO',
   })
   const newUser = await prisma.user.create({
     data: {
@@ -74,4 +74,17 @@ export const findUniqueUserByUsername = async (
   })
 
   return user
+}
+
+export const findAllUsers = async (select?: Prisma.UserSelect) => {
+  const users = await prisma.user.findMany({
+    select: {
+      id: true,
+      username: true,
+      status: true,
+      ...select,
+    },
+  })
+
+  return users
 }

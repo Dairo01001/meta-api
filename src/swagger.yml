@@ -270,8 +270,6 @@ paths:
                 $ref: '#/components/responses/UnauthorizedError'
   /persons:
     post:
-      security:
-        - bearerAuth: []
       summary: Crea un usuario
       tags: [Persons]
       description: Crea un usuario
@@ -850,6 +848,34 @@ paths:
               schema:
                 $ref: '#/components/responses/UnauthorizedError'
   /users:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Obtener todos los usuarios
+      tags: [Users]
+      description: Obtener todos los usuarios
+      operationId: get-users
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/BadRequestError'
     post:
       summary: Crea un usuario
       tags: [Users]
@@ -1158,6 +1184,10 @@ components:
           type: number
           description: ID del programa
           example: 1
+        userId:
+          type: string
+          description: ID del usuario
+          example: 2318fb07-d6af-45db-ae0b-459e468a5e24
     Person:
       type: object
       properties:

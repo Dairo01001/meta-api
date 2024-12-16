@@ -1,4 +1,4 @@
-import { number, object, string, TypeOf } from 'zod';
+import { number, object, string, TypeOf } from 'zod'
 
 export const CreatePersonSchema = object({
   body: object({
@@ -25,7 +25,10 @@ export const CreatePersonSchema = object({
       required_error: 'Program id is required',
       invalid_type_error: 'Program id is invalid',
     }),
+    userId: string({
+      required_error: 'User id is required',
+    }),
   }),
-});
+})
 
-export type CreatePersonInput = TypeOf<typeof CreatePersonSchema>;
+export type CreatePersonInput = TypeOf<typeof CreatePersonSchema>

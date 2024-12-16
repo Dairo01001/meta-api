@@ -6,12 +6,7 @@ import { CreatePersonSchema } from './person.schema'
 export const personRoutes = (): Router => {
   const router = Router()
 
-  router.post(
-    '/',
-    deserializeUser,
-    validateResource(CreatePersonSchema),
-    createPersonHandler,
-  )
+  router.post('/', validateResource(CreatePersonSchema), createPersonHandler)
   router.put(
     '/:id',
     deserializeUser,

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { SignInUserInput } from '../../schemas'
-import { createUser, findUniqueUserByUsername } from '../services'
+import { createUser, findAllUsers, findUniqueUserByUsername } from '../services'
 
 export const createUserHandler = async (
   req: Request<{}, {}, SignInUserInput['body']>,
@@ -39,6 +39,18 @@ export const getUserByUsernameHandler = async (
   try {
     const user = await findUniqueUserByUsername(req.params.username)
     res.status(StatusCodes.OK).json(user)
+  } catch (err: any) {
+    next(err)
+  }
+}
+
+export const getAllUsersHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    res.status(StatusCodes.OK).json(await findAllUsers())
   } catch (err: any) {
     next(err)
   }
